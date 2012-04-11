@@ -1,0 +1,21 @@
+{
+  "author": "Roman Shtylman <shtylman@gmail.com>",
+  "name": "jsbundler",
+  "description": "automatic bundling of nodejs modules for the browser",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shtylman/node-jsbundler.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "dependencies": {
+    "detective": "0.1.0"
+  },
+  "devDependencies": {
+    "mocha": ">1.0.0"
+  },
+  "optionalDependencies": {}
+}
