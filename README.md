@@ -6,11 +6,13 @@ Although a few other similar projects exist in this space(browserify, brequest, 
 ### Installation ###
 
 From npm
+
 ```
   npm install jsbundler
 ```
 
 From github
+
 ```
   npm install git://github.com/shtylman/node-jsbundler.git
 ```
@@ -22,11 +24,13 @@ There are two components to the api, client side (browser) and server side (node
 Before you can src any require script files in your web app you will need to expose the client library. jsbundler exposes the raw source as well as provides connect compatible middleware for the client file.
 
 Put the following before any other jsbundler generated files in your html
+
 ```html
   <script src="/path/to/require.js"></script>
 ```
 
 Use the connect middleware to expose the require.js file
+
 ```javascript
 
 // compress: true will use uglify-js to minify the client code
@@ -38,6 +42,7 @@ app.use(jsbundler.client.static({
 ```
 
 You can also access the client source directly
+
 ```javascript
 // client source will be the javascript file source
 var client_source = jsbundler.client.bundle();
