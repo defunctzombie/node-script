@@ -10,13 +10,13 @@ For example, the client bound require.js file is under 300 bytes after minificat
 From npm
 
 ```
-  npm install jsbundler
+npm install jsbundler
 ```
 
 From github
 
 ```
-  npm install git://github.com/shtylman/node-jsbundler.git
+npm install git://github.com/shtylman/node-jsbundler.git
 ```
 
 ### Usage ###
@@ -66,7 +66,7 @@ var client_source = jsbundler.client.toString();
 You can serve this file yourself and put the following before any other jsbundler generated files in your html
 
 ```html
-  <script src="/route/to/require.js"></script>
+<script src="/route/to/require.js"></script>
 ```
 
 #### multiple bundles ####
@@ -94,13 +94,13 @@ var widgets = jsbundler.bundle({
 You now have two js bundles which contain 'foobar' and 'widgets' modules respectively. To invoke them from the client side you could do:
 
 ```html
-  <script src="/route/to/require.js"></script>
-  <script src="/route/to/foobar.js"></script>
-  <script src="/route/to/widgets.js"></script>
-  <script>
-    var widgets = require('widgets');
-    var foobar = require('foobar');
-  </script>
+<script src="/route/to/require.js"></script>
+<script src="/route/to/foobar.js"></script>
+<script src="/route/to/widgets.js"></script>
+<script>
+  var widgets = require('widgets');
+  var foobar = require('foobar');
+</script>
 ```
 
 NOTE: if widgets and foobar require the same module, that module will ship with both packages currently. Inter bundle dependency resolution is not currently availalbe.
