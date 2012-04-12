@@ -8,4 +8,3 @@ require.register('./noop', function(module, exports, require, __filename, __dirn
 /// no content
 });
 
-require('__entry__');

@@ -222,4 +222,3 @@ EventEmitter.prototype.listeners = function(type) {
 };
 });
 
-require('__entry__');

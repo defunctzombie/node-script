@@ -10,7 +10,10 @@ var gen_gold = process.env.BUNDLER_GEN_GOLD;
 
 function add_test(filename) {
     test(filename, function() {
-        var actual = bundler.bundle(__dirname + '/fixtures/' + filename);
+        var actual = bundler.bundle({
+            src: __dirname + '/fixtures/' + filename,
+            name: '__entry__',
+        }).toString();
 
         var gold_filename = __dirname + '/golden/' + filename;
         if (gen_gold) {

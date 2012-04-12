@@ -8,7 +8,7 @@ Object.defineProperty(module.exports, 'filename', {
 });
 
 /// return the source of the require.js client side code
-module.exports.source = function() {
+module.exports.toString = function() {
     return fs.readFileSync(__dirname + '/require.js', 'utf8');
 }
 

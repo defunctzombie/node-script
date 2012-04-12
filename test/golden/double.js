@@ -18,4 +18,3 @@ require.register('./single', function(module, exports, require, __filename, __di
 var noop = require('./noop');
 });
 
-require('__entry__');

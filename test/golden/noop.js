@@ -2,4 +2,3 @@ require.register('__entry__', function(module, exports, require, __filename, __d
 /// no content
 });
 
-require('__entry__');

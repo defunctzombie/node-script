@@ -10,4 +10,3 @@ if (require.main === module) {
 
 });
 
-require('__entry__');

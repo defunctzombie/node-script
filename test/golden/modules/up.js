@@ -17,4 +17,3 @@ var noop = require('./noop');
 });
 
 require.alias('./noop', '../noop');
-require('__entry__');
