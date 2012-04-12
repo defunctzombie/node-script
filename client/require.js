@@ -2,16 +2,20 @@
 // closure so the 'require' variable can be minified
 var require = (function() {
 
+var wrappers = {};
+var aliases = {};
+var cached = {};
+
 function require(name) {
     // is the name aliased?
-    name = require.aliases[name] || name;
+    name = aliases[name] || name;
 
-    var cached = require.cached[name];
-    if (cached) {
-        return cached;
+    var cache = cached[name];
+    if (cache) {
+        return cache;
     }
 
-    var func = require.wrappers[name];
+    var func = wrappers[name];
     if (!func) {
         throw new Error('no such module: ' + name);
     }
@@ -25,20 +29,16 @@ function require(name) {
     }
 
     func(module, module.exports, require);
-    return require.cached[name] = module.exports;
+    return cached[name] = module.exports;
 }
 
 require.register = function(path, fn) {
-    require.wrappers[path] = fn;
+    wrappers[path] = fn;
 };
 
 require.alias = function(path, alias) {
-    require.aliases[path] = alias;
+    aliases[path] = alias;
 }
-
-require.aliases = {};
-require.wrappers = {};
-require.cached = {};
 
 return require;
 
