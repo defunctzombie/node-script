@@ -3,6 +3,8 @@ An automatic javascript file bundler for files written using the node.js require
 
 Although a few other similar projects exist in this space(browserify, brequest, jsbundle), the jsbundler codebase and client side code is very minimal. It leverages the builtin node module loader to track down your dependencies and generate the output.
 
+For example, the client bound require.js file is under 400 bytes after minification!
+
 ### Installation ###
 
 From npm
@@ -46,6 +48,12 @@ You can also access the client source directly
 ```javascript
 // client source will be the javascript file source
 var client_source = jsbundler.client.bundle();
+```
+
+Or if you really really want to do things your way, just get the location of the require.js file
+
+```javascript
+var full_path_to_require_js = jsbundler.client.filename;
 ```
 
 ### Server Side ###
