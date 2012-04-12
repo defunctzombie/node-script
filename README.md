@@ -61,7 +61,7 @@ var full_path_to_require_js = jsbundler.client.filename;
 To create a client bound javascript file from a local file use the basic bundle api call.
 
 ```javascript
-// bundle will the the complete javascript source
+// bundle will build the complete javascript source and inject dependencies
 var bundle = jsbundler.bundle('/path/to/local/file.js');
 ```
 
