@@ -71,7 +71,7 @@ You can serve this file yourself and put the following before any other jsbundle
 
 #### multiple bundles ####
 
-Instead of using a single file, you can choose to create separate bundles separate from the require.js emulation file.
+Instead of using a single file, you can choose to create separate bundles without the require.js emulation file. This allows you to pick and choose how you want to serve up files to the user. To trigger this mode, just pass an object as the argument to `jsbundler.bundle` instead of a string.
 
 ```javascript
 var jsbundler = require('jsbundler');
@@ -84,6 +84,7 @@ var foobar = jsbundler.bundle({
 var widgets = jsbundler.bundle({
   src: '/path/to/widgets/file.js',
   name: 'widgets'
+  //auto_load: true // can be used to automatically require the module on script execution
 });
 
 // the middleware methods are still available
