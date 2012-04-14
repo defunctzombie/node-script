@@ -8,11 +8,16 @@ var bundler = require('../');
 
 var gen_gold = process.env.BUNDLER_GEN_GOLD;
 
+var externals = {
+    'core': '/some/external/url.js'
+}
+
 function add_test(filename) {
     test(filename, function() {
         var actual = bundler.bundle({
             src: __dirname + '/fixtures/' + filename,
             name: '__entry__',
+            external: externals,
         }).toString();
 
         var gold_filename = __dirname + '/golden/' + filename;
@@ -36,4 +41,3 @@ fs.readdirSync(__dirname + '/fixtures').forEach(function(fixture) {
 
 // checks for loading one level up
 add_test('modules/up.js');
-
