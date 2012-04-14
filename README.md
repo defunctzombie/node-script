@@ -94,17 +94,20 @@ var widgets = jsbundler.bundle({
   name: 'widgets',
 });
 
-// the middleware methods are still available
+// the middleware methods are still available if you want to use them to serve up the modules
 //foobar.middleware({..});
 //widgets.middleware({..});
+
+// you can also get the bundle source using toString();
+//foobar.toString(); // the source for the foobar bundle
 ```
 
-You now have two js bundles which contain 'foobar' and 'widgets' modules respectively. To invoke them from the client side you could do:
+You now have two js bundles which contain 'foobar' and 'widgets' modules respectively. To invoke them from the client side:
 
 ```html
 <script src="/route/to/require.js"></script>
 <script src="/route/to/foobar.js"></script>
 ```
 
-foobar.js will not contain any code for the widgets module and will instead request it before running
+foobar.js will not contain any code for the widgets module and will instead request it from `/route/to/widgets.js` before executing the foobar module code.
 
