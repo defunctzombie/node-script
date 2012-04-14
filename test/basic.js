@@ -9,7 +9,7 @@ var bundler = require('../');
 var gen_gold = process.env.BUNDLER_GEN_GOLD;
 
 var externals = {
-    'core': '/some/external/url.js'
+    'core': '/some/url/to/core.js'
 }
 
 function add_test(filename) {

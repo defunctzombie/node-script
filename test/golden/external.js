@@ -1,10 +1,9 @@
 require.wait('core', function() {
 require.register('__entry__', function(module, exports, require, __filename, __dirname) {
-/// test that the external library is not included
+/// test that the core library is not included inline
 
 var core = require('core');
 });
 require('__entry__');
 });
-//cause script to be loaded
-require.script('/some/external/url.js');
+require.script('/some/url/to/core.js');
