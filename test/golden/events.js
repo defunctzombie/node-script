@@ -1,7 +1,7 @@
 require.register('__entry__', function(module, exports, require, __filename, __dirname) {
 require('events');
 });
-
+require('__entry__');
 require.register('events', function(module, exports, require, __filename, __dirname) {
 // Copyright Joyent, Inc. and other Node contributors.
 //

@@ -1,23 +1,33 @@
 
 // closure so the 'require' variable can be minified
-var require = (function() {
+var require = (function () {
 
-var wrappers = {};
 var aliases = {};
-var cached = {};
+var modules = {};
+
+function get(name) {
+    var module = modules[name];
+    if (module) {
+        return module;
+    }
+
+    return modules[name] = {
+        waiting: []
+    };
+}
 
 function require(name) {
     // is the name aliased?
     name = aliases[name] || name;
 
-    var cache = cached[name];
-    if (cache) {
-        return cache;
+    var details = modules[name];
+
+    if (!details || !details.fn) {
+        throw new Error('no such module: ' + name);
     }
 
-    var func = wrappers[name];
-    if (!func) {
-        throw new Error('no such module: ' + name);
+    if (details.exports) {
+        return details.exports;
     }
 
     var module = {
@@ -28,16 +38,43 @@ function require(name) {
         require.main = module;
     }
 
-    func(module, module.exports, require);
-    return cached[name] = module.exports;
+    details.fn(module, module.exports, require);
+    return details.exports = module.exports;
 }
 
-require.register = function(path, fn) {
-    wrappers[path] = fn;
+require.script = function(url) {
+    $.ajax({
+        url: url,
+        cache: true,
+        dataType: 'script'
+    });
+}
+
+require.register = function(name, fn) {
+    var module = get(name);
+
+    // register module function
+    module.fn = fn;
+
+    // alert anyone waiting
+    module.waiting.forEach(function(cb) {
+        cb();
+    });
 };
 
-require.alias = function(path, alias) {
-    aliases[path] = alias;
+require.alias = function(name, alias) {
+    aliases[name] = alias;
+}
+
+require.wait = function(name, cb) {
+    var module = get(name);
+
+    // already loaded
+    if (module.exports) {
+        return cb();
+    }
+
+    module.waiting.push(cb);
 }
 
 return require;

@@ -1,9 +1,7 @@
 ##  jsbundler ##
-An automatic javascript file bundler for files written using the node.js require style for dependencies.
+An automatic javascript file bundler for files written using the node.js require style for dependencies with support for async loading of external requires.
 
 Although a few other similar projects exist in this space(browserify, jsbundle, etc), the jsbundler codebase and client side code is very minimal. It leverages the builtin node module loader to track down your dependencies and generate the output.
-
-For example, the client bound require.js file is under 300 bytes after minification!
 
 ### Installation ###
 
@@ -71,20 +69,29 @@ You can serve this file yourself and put the following before any other jsbundle
 
 #### multiple bundles ####
 
-Instead of using a single file, you can choose to create separate bundles without the require.js emulation file. This allows you to pick and choose how you want to serve up files to the user. To trigger this mode, just pass an object as the argument to `jsbundler.bundle` instead of a string.
+Lets say you have a large library with many components. You may not want to ship one giant file to the client and instead favor to split the library up for better caching. jsbundler can handle this for you and will automatically load any external resources before making your module available.
+
+To create multiple bundles, just pass an options object instead of a string to the bundle api call. The options will specify how your bundle is created.
 
 ```javascript
 var jsbundler = require('jsbundler');
 
 var foobar = jsbundler.bundle({
-  src: '/path/to/base/file.js',
-  name: 'foobar'
+  src: '/path/to/base/foobar.js',
+  // the module name, if omitted, basename of filename is used (i.e. foobar)
+  name: 'foobar',
+  external: {
+    // this tells the bundler that widgets should not be resolved immediately
+    // but instead loaded from the given url when foobar itself is loaded
+    'widgets': '/route/to/widgets.js',
+  }
 });
 
+// assume widgets has good api stability and rarely changes
+// we may want the client to cache it longer and thus separate it from foobar
 var widgets = jsbundler.bundle({
   src: '/path/to/widgets/file.js',
-  name: 'widgets'
-  //auto_load: true // can be used to automatically require the module on script execution
+  name: 'widgets',
 });
 
 // the middleware methods are still available
@@ -97,12 +104,7 @@ You now have two js bundles which contain 'foobar' and 'widgets' modules respect
 ```html
 <script src="/route/to/require.js"></script>
 <script src="/route/to/foobar.js"></script>
-<script src="/route/to/widgets.js"></script>
-<script>
-  var widgets = require('widgets');
-  var foobar = require('foobar');
-</script>
 ```
 
-NOTE: if widgets and foobar require the same module, that module will ship with both packages currently. Inter bundle dependency resolution is not currently availalbe.
+foobar.js will not contain any code for the widgets module and will instead request it before running
 
