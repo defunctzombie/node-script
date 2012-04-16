@@ -2,7 +2,7 @@
 
 Wouldn't it be nice to just have one script tag in your html file and have everything "just work"? Well, jsbundler does just that!
 
-Jsbundler is an automatic javascript file bundler and middleware for files written using the node.js require style for dependencies. It also supports for async loading of external resources for better cache separation.
+Jsbundler is an automatic javascript file bundler and middleware for files written using the node.js require style for dependencies. It also supports for async loading of external resources for better cache separation; and it does all that without changing how you require modules in your js files.
 
 Although a few other similar projects exist in this space(browserify, jsbundle, brequire, etc), the jsbundler codebase and client side code is very minimal. It leverages the builtin node module loader to track down your dependencies and generate the output. It also support the concept on async loading and separating your bundles for better caching.
 
