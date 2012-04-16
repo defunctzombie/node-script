@@ -80,6 +80,7 @@ var foobar = jsbundler.bundle({
   src: '/path/to/base/foobar.js',
   // the module name, if omitted, basename of filename is used (i.e. foobar)
   name: 'foobar',
+  use_client: true, // include the require.js source with this file
   external: {
     // this tells the bundler that widgets should not be resolved immediately
     // but instead loaded from the given url when foobar itself is loaded
@@ -102,10 +103,9 @@ var widgets = jsbundler.bundle({
 //foobar.toString(); // the source for the foobar bundle
 ```
 
-You now have two js bundles which contain 'foobar' and 'widgets' modules respectively. To invoke them from the client side:
+You now just have to specify one file in your html and the rest is automatially loaded for you if needed.
 
 ```html
-<script src="/route/to/require.js"></script>
 <script src="/route/to/foobar.js"></script>
 ```
 
