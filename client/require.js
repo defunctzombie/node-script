@@ -56,10 +56,10 @@ require.register = function(name, fn) {
     // register module function
     module.fn = fn;
 
-    // alert anyone waiting
-    module.waiting.forEach(function(cb) {
-        cb();
-    });
+    // don't use forEach to be IE compatible
+    for (var i=0 ; i<module.waiting.length ; ++i) {
+        module.waiting[i]();
+    }
 };
 
 require.alias = function(name, alias) {
