@@ -30,16 +30,30 @@ function require(name) {
         return details.exports;
     }
 
-    var module = {
-        exports: {}
-    };
+    // provide empty stub for exports
+    details.exports = {};
+    var module = {};
+
+    // the following code exists to support the use case described below
+    // mod A sets the export object to a function, then requires mod B
+    // mod B requires mod A. Because mod A was able to set the exports
+    // the require in mod B should return the function and not the stub
+    // object that exports starts out as
+    Object.defineProperty(module, 'exports', {
+        get: function() {
+            return details.exports;
+        },
+        set: function(val) {
+            details.exports = val;
+        }
+    });
 
     if (!require.main) {
         require.main = module;
     }
 
-    details.fn(module, module.exports, require);
-    return details.exports = module.exports;
+    details.fn(window, module, module.exports, require);
+    return details.exports;
 }
 
 require.script = function(url) {
