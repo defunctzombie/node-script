@@ -1,10 +1,14 @@
 /// even requires in if statements and functions should be found
 
-function func() {
-    require('./single');
-}
+// TODO add an 'expects' method to assert
 
-if (hi) {
+function func() {
     require('./noop');
 }
+
+if (true) {
+    func();
+}
+
+assert.equal(noop_load_count, 1);
 

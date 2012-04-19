@@ -2,6 +2,8 @@
 /// single will require noop again
 
 var noop = require('./noop');
-var single = require('./single');
+assert.equal(noop_load_count, 1);
 
-module.exports = function() { };
+var noop = require('./noop');
+assert.equal(noop_load_count, 1);
+
