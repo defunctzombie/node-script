@@ -57,11 +57,14 @@ function require(name) {
 }
 
 require.script = function(url) {
-    $.ajax({
-        url: url,
-        cache: true,
-        dataType: 'script'
-    });
+    (function() {
+        var script = document.createElement('script');
+        script.src = url;
+        script.type = 'text/javascript';
+        script.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(script, s);
+    })();
 }
 
 require.register = function(name, fn) {
