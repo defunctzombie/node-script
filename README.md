@@ -89,6 +89,11 @@ var foobar = jsbundler.bundle({
     // but instead loaded from the given url when foobar itself is loaded
     'widgets': '/route/to/widgets.js',
   }
+
+  // shims allow you to replace 3rd party modules during bundling
+  //shims: {
+  //  'process': '/path/to/process/shim.js'
+  //},
 });
 
 // assume widgets has good api stability and rarely changes
