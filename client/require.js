@@ -17,18 +17,29 @@ function get(name) {
 }
 
 function require(name) {
+
+    // use the offset for relative paths only
+    if (require.offset && name[0] === '.') {
+        name = require.offset + name;
+    }
+
     // is the name aliased?
     name = aliases[name] || name;
 
     var details = modules[name];
 
+    // uh oh
     if (!details || !details.fn) {
         throw new Error('no such module: ' + name);
     }
 
+    // already loaded
     if (details.exports) {
         return details.exports;
     }
+
+    var previous = require.offset;
+    require.offset = details.offset;
 
     // provide empty stub for exports
     details.exports = {};
@@ -53,6 +64,7 @@ function require(name) {
     }
 
     details.fn(window, module, module.exports, require);
+    require.offset = previous;
     return details.exports;
 }
 
@@ -67,10 +79,11 @@ require.script = function(url) {
     })();
 }
 
-require.register = function(name, fn) {
+require.register = function(name, offset, fn) {
     var module = get(name);
 
     // register module function
+    module.offset = offset;
     module.fn = fn;
 
     // don't use forEach to be IE compatible
