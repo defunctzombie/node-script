@@ -34,30 +34,22 @@ function require(name) {
     }
 
     // already loaded
-    if (details.exports) {
-        return details.exports;
+    if (details.module) {
+        return details.module.exports;
     }
 
     var previous = require.offset;
     require.offset = details.offset;
 
-    // provide empty stub for exports
-    details.exports = {};
-    var module = {};
-
-    // the following code exists to support the use case described below
     // mod A sets the export object to a function, then requires mod B
     // mod B requires mod A. Because mod A was able to set the exports
     // the require in mod B should return the function and not the stub
     // object that exports starts out as
-    Object.defineProperty(module, 'exports', {
-        get: function() {
-            return details.exports;
-        },
-        set: function(val) {
-            details.exports = val;
-        }
-    });
+
+    // provide empty stub for exports
+    var module = details.module = {
+        exports: {}
+    };
 
     if (!require.main) {
         require.main = module;
@@ -65,7 +57,7 @@ function require(name) {
 
     details.fn(window, module, module.exports, require);
     require.offset = previous;
-    return details.exports;
+    return module.exports;
 }
 
 require.script = function(url) {

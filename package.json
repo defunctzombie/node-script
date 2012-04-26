@@ -2,7 +2,7 @@
   "author": "Roman Shtylman <shtylman@gmail.com>",
   "name": "jsbundler",
   "description": "automatic bundling of nodejs modules for the browser",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": {
     "type": "git",
     "url": "git://github.com/shtylman/node-jsbundler.git"
