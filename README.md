@@ -1,4 +1,4 @@
-## script ##
+## script [![Build Status](https://secure.travis-ci.org/shtylman/node-script.png?branch=master)](http://travis-ci.org/shtylman/node-script)##
 
 Wouldn't it be nice to just have one script tag in your html file and have everything "just work"? Well, script does just that!
 
