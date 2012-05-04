@@ -5,13 +5,13 @@ var fs = require('fs');
 var vm = require('vm');
 
 // local
-var bundler = require('../');
+var script = require('../');
 
 function add_test(filename) {
     test(filename, function() {
         var full_path = __dirname + '/fixtures/' + filename;
 
-        var src = bundler.bundle({
+        var src = script.bundle({
             src: full_path,
             use_client: true,
             name: '__entry__',

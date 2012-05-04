@@ -1,33 +1,33 @@
-##  jsbundler ##
+## script ##
 
-Wouldn't it be nice to just have one script tag in your html file and have everything "just work"? Well, jsbundler does just that!
+Wouldn't it be nice to just have one script tag in your html file and have everything "just work"? Well, script does just that!
 
 Jsbundler is an automatic javascript file bundler and middleware for files written using the node.js require style for dependencies. It also supports for async loading of external resources for better cache separation; and it does all that without changing how you require modules in your js files.
 
-Although a few other similar projects exist in this space(browserify, jsbundle, brequire, etc), the jsbundler codebase and client side code is very minimal. It leverages the builtin node module loader to track down your dependencies and generate the output. It also support the concept on async loading and separating your bundles for better caching.
+Although a few other similar projects exist in this space(browserify, jsbundle, brequire, etc), the script codebase and client side code is very minimal. It leverages the builtin node module loader to track down your dependencies and generate the output. It also support the concept on async loading and separating your bundles for better caching.
 
 ### Installation ###
 
 From npm
 
 ```
-npm install jsbundler
+npm install script
 ```
 
 From github
 
 ```
-npm install git://github.com/shtylman/node-jsbundler.git
+npm install git://github.com/shtylman/node-script.git
 ```
 
 ### Usage ###
 
-Using jsbundler is super simple and it works out of the box with connect (and connect based apps).
+Using script is super simple and it works out of the box with connect (and connect based apps).
 
 ```javascript
-var jsbundler = require('jsbundler');
+var script = require('script');
 
-var bundle = jsbundler.bundle('/path/to/your/file.js')
+var bundle = script.bundle('/path/to/your/file.js')
 app.use('/route/to/your/file.js', bundle.middleware({
   // age in milliseconds of the resource
   max_age: 0,
@@ -39,13 +39,13 @@ app.use('/route/to/your/file.js', bundle.middleware({
 
 ```
 
-This is not the only way to use jsbundler, read on for a more detailed breakdown.
+This is not the only way to use script, read on for a more detailed breakdown.
 
 ### Details ###
 
 There are two components to the api: the emulation of the `require` function and wrapping of your modules for loading on the browser.
 
-The emulation of the `require` function is done through the require.js file located in the client folder in the source tree. It is exposed through the jsbundler module.
+The emulation of the `require` function is done through the require.js file located in the client folder in the source tree. It is exposed through the script module.
 
 In the default single file mode (shown above in the middleware example), the client code is generated with your bundle and your main module will be run automatically. You can however choose to send that file to the client separately if you wish to have a few js bundle files.
 
@@ -54,17 +54,17 @@ In the default single file mode (shown above in the middleware example), the cli
 The location of the client file on disk is exposed through the client.filename variable;
 
 ```javascript
-var full_path_to_require_js = jsbundler.client.filename;
+var full_path_to_require_js = script.client.filename;
 ```
 
 You can also get a copy of the client source
 
 ```javascript
 // client source will be the javascript file source
-var client_source = jsbundler.client.toString();
+var client_source = script.client.toString();
 ```
 
-You can serve this file yourself and put the following before any other jsbundler generated files in your html
+You can serve this file yourself and put the following before any other script generated files in your html
 
 ```html
 <script src="/route/to/require.js"></script>
@@ -72,14 +72,14 @@ You can serve this file yourself and put the following before any other jsbundle
 
 #### multiple bundles ####
 
-Lets say you have a large library with many components. You may not want to ship one giant file to the client and instead favor to split the library up for better caching. jsbundler can handle this for you and will automatically load any external resources before making your module available.
+Lets say you have a large library with many components. You may not want to ship one giant file to the client and instead favor to split the library up for better caching. script can handle this for you and will automatically load any external resources before making your module available.
 
 To create multiple bundles, just pass an options object instead of a string to the bundle api call. The options will specify how your bundle is created.
 
 ```javascript
-var jsbundler = require('jsbundler');
+var script = require('script');
 
-var foobar = jsbundler.bundle({
+var foobar = script.bundle({
   src: '/path/to/base/foobar.js',
   // the module name, if omitted, basename of filename is used (i.e. foobar)
   name: 'foobar',
@@ -98,7 +98,7 @@ var foobar = jsbundler.bundle({
 
 // assume widgets has good api stability and rarely changes
 // we may want the client to cache it longer and thus separate it from foobar
-var widgets = jsbundler.bundle({
+var widgets = script.bundle({
   src: '/path/to/widgets/file.js',
   name: 'widgets',
 });

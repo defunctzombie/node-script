@@ -1,11 +1,11 @@
 {
   "author": "Roman Shtylman <shtylman@gmail.com>",
-  "name": "jsbundler",
+  "name": "script",
   "description": "automatic bundling of nodejs modules for the browser",
   "version": "0.0.8",
   "repository": {
     "type": "git",
-    "url": "git://github.com/shtylman/node-jsbundler.git"
+    "url": "git://github.com/shtylman/node-script.git"
   },
   "main": "index.js",
   "scripts": {
