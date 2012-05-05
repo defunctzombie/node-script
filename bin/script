@@ -45,7 +45,8 @@ var bundle_src = bundle.toString();
 var req_src = fs.readFileSync(__dirname + '/../client/minimal.js', 'utf8');
 
 var src = 'var ' + export_name + ' = (function() {';
-src += req_src + bundle_src + '})();';
+src += req_src;
+src += 'return ' + bundle_src + '})();';
 
 if (minify) {
     var uglifyjs = require('uglify-js');
