@@ -11,6 +11,9 @@
   "scripts": {
     "test": "node test"
   },
+  "bin" : {
+    "script" : "bin/script"
+  },
   "dependencies": {
     "detective": "0.1.0",
     "optimist": "0.3.4"
