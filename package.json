@@ -12,7 +12,8 @@
     "test": "node test"
   },
   "dependencies": {
-    "detective": "0.1.0"
+    "detective": "0.1.0",
+    "optimist": "0.3.4"
   },
   "devDependencies": {
     "mocha": ">1.0.0",
