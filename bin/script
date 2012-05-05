@@ -14,7 +14,7 @@ var argv = require('optimist')
         alias : 'n',
         desc : 'the variable name to assign the module output to'
     })
-    .option('minify', {
+    .boolean('minify', {
         alias : 'm',
         desc : 'minify the javascipt output',
         default : false,
