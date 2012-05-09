@@ -15,7 +15,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "node test"
+    "test": "mocha"
   },
   "bin" : {
     "script" : "bin/script"
