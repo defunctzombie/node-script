@@ -113,3 +113,14 @@ You now just have to specify one file in your html and the rest is automatially 
 
 foobar.js will not contain any code for the widgets module and will instead request it from `/route/to/widgets.js` before executing the foobar module code.
 
+### cli ###
+
+The ```script``` cli tool allows you to bundle up your package for others to use client side without needing to use script or other automatic bundlers. This is useful if you don't work in a node.js environment and want to make distributed versions of your library.
+
+```
+script --name "my_module" ./path/to/entry/point.js
+```
+
+Script will load the javascript file at the specified path and bundle all of the dependencies into a single file. The entry point module will be exposed to a variable with the given name (i.e. my_module).
+
+If you want to minify the output, just pass the ```--minify``` option and the output will be run through uglify-js.

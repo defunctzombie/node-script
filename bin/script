@@ -25,7 +25,7 @@ var argv = require('optimist')
     })
     .check(function (argv) {
         if (argv.help) throw ''
-        if (process.argv.length <= 2) throw 'Specify a parameter.'
+        if (process.argv.length <= 2) throw 'specify a javascript filename.'
     })
     .argv
 
