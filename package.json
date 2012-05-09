@@ -7,6 +7,12 @@
     "type": "git",
     "url": "git://github.com/shtylman/node-script.git"
   },
+  "keywords": [
+    "bundle",
+    "require",
+    "script",
+    "browser"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "node test"
