@@ -1,16 +1,16 @@
 var fs = require('fs');
 var connect = require('connect');
-var jsbundler = require('../');
+var script = require('../');
 
 var app = connect();
 
-// simplest way to use jsbundler is to just bundle everything into one file
+// simplest way to use script is to just bundle everything into one file
 // use .middleware to get connect compatible middleware
-app.use('/js/basic.js', jsbundler.bundle(__dirname + '/public/basic.js').middleware());
+app.use('/js/basic.js', script.bundle(__dirname + '/public/basic.js').middleware());
 
 // here we show how to use the external module features
 // external.js will require('core') but we serve core as a separate file
-app.use('/js/external.js', jsbundler.bundle({
+app.use('/js/external.js', script.bundle({
     src: __dirname + '/public/external.js',
     use_client: true,
     external: {
@@ -19,8 +19,8 @@ app.use('/js/external.js', jsbundler.bundle({
 }).middleware());
 
 // we must remember to server any separate files as well
-// here we serve core
-app.use('/js/core.js', jsbundler.bundle({
+// here we serve core since it was used by the external script above
+app.use('/js/core.js', script.bundle({
     src: __dirname + '/public/core.js',
 }).middleware());
 
