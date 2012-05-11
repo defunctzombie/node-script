@@ -2,7 +2,7 @@
   "author": "Roman Shtylman <shtylman@gmail.com>",
   "name": "script",
   "description": "automatic bundling of nodejs modules for the browser",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "type": "git",
     "url": "git://github.com/shtylman/node-script.git"
@@ -17,12 +17,13 @@
   "scripts": {
     "test": "mocha"
   },
-  "bin" : {
-    "script" : "bin/script"
+  "bin": {
+    "script": "bin/script"
   },
   "dependencies": {
     "detective": "0.1.0",
-    "optimist": "0.3.4"
+    "optimist": "0.3.4",
+    "uglify-js": "1.2.6"
   },
   "devDependencies": {
     "mocha": ">1.0.0",
@@ -30,5 +31,8 @@
   },
   "optionalDependencies": {
     "uglify-js": "1.2.6"
+  },
+  "engines": {
+    "node": "*"
   }
 }
