@@ -115,10 +115,10 @@ foobar.js will not contain any code for the widgets module and will instead requ
 
 ### cli ###
 
-The ```script``` cli tool allows you to bundle up your package for others to use client side without needing to use script or other automatic bundlers. This is useful if you don't work in a node.js environment and want to make distributed versions of your library.
+The cli tool allows you to bundle up your package for others to use client side without needing to use script or other automatic bundlers. This is useful if you don't work in a node.js environment and want to make distributed versions of your library.
 
 ```
-script --name "my_module" ./path/to/entry/point.js
+bundle --name "my_module" ./path/to/entry/point.js
 ```
 
 Script will load the javascript file at the specified path and bundle all of the dependencies into a single file. The entry point module will be exposed to a variable with the given name (i.e. my_module).

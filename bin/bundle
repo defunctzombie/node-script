@@ -8,7 +8,7 @@ var fs = require('fs');
 var script = require('../');
 
 var argv = require('optimist')
-    .usage('Usage: script {OPTIONS} [entry file]')
+    .usage('Usage: bundle {OPTIONS} [entry file]')
     .wrap(80)
     .option('name', {
         alias : 'n',
