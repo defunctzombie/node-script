@@ -33,7 +33,9 @@ function require(name) {
         require.main = module;
     }
 
-    details.fn.call(window, window, module, module.exports, require);
+    var process = {};
+
+    details.fn.call(window, window, module, module.exports, require, process);
     require.offset = previous;
     return module.exports;
 }

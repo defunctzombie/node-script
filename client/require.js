@@ -55,12 +55,15 @@ function require(name) {
         require.main = module;
     }
 
-    details.fn.call(window, window, module, module.exports, require);
+    // TODO
+    var process = {};
+
+    details.fn.call(window, window, module, module.exports, require, process);
     require.offset = previous;
     return module.exports;
 }
 
-require.script = function(url) {
+require.load = function(url) {
     (function() {
         var script = document.createElement('script');
         script.src = url;
@@ -71,7 +74,7 @@ require.script = function(url) {
     })();
 }
 
-require.register = function(name, offset, fn) {
+require.define = function(name, offset, fn) {
     var module = get(name);
 
     // register module function
@@ -88,15 +91,26 @@ require.alias = function(name, alias) {
     aliases[name] = alias;
 }
 
-require.wait = function(name, cb) {
-    var module = get(name);
-
-    // already loaded
-    if (module.exports) {
-        return cb();
+require.wait = function(names, cb) {
+    var count = names.length;
+    function done() {
+        if (--count <= 0) {
+            cb();
+        }
     }
 
-    module.waiting.push(cb);
+    names.forEach(function(name) {
+        var module = get(name);
+
+        // already loaded
+        if (module.exports) {
+            return done();
+        }
+
+        module.waiting.push(function() {
+            done();
+        });
+    });
 }
 
 return require;

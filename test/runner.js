@@ -2,32 +2,27 @@
 // builtin
 var assert = require('assert');
 var fs = require('fs');
-var vm = require('vm');
 
 // local
 var script = require('../');
 
 function add_test(filename) {
-    test(filename, function() {
+    test(filename, function(done) {
         var full_path = __dirname + '/fixtures/' + filename;
+        var expect_path = __dirname + '/reference/' + filename;
 
-        var src = script.bundle({
-            src: full_path,
-            use_client: true,
-            name: '__entry__',
-        }).toString();
+        script.file(full_path).generate(function(err, source) {
+            assert.ok(!err, err);
 
-        var sandbox = {
-            window: {},
-            assert: assert,
-            console: console,
-            Array: Array,
-            Date: Date,
-            String: String,
-        };
+            if (process.env.GENERATE) {
+                fs.writeFileSync(expect_path, source, 'utf8');
+                return done();
+            }
 
-        sandbox.global = sandbox;
-        vm.runInNewContext(src, sandbox, full_path);
+            var expected = fs.readFileSync(expect_path, 'utf8');
+            assert.equal(source, expected);
+            done();
+        });
     });
 }
 
