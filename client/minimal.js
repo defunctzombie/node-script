@@ -1,4 +1,9 @@
 
+var require = (function () {
+
+var aliases = {};
+var modules = {};
+
 function require(name) {
 
     // use the offset for relative paths only
@@ -7,9 +12,9 @@ function require(name) {
     }
 
     // is the name aliased?
-    name = require._aliases[name] || name;
+    name = aliases[name] || name;
 
-    var details = require._modules[name];
+    var details = modules[name];
 
     // uh oh
     if (!details || !details.fn) {
@@ -40,18 +45,18 @@ function require(name) {
     return module.exports;
 }
 
-require.register = function(name, offset, fn) {
-    require._modules[name] = {
+require.define = function(name, offset, fn) {
+    modules[name] = {
         offset: offset,
         fn: fn
     };
 };
 
 require.alias = function(name, alias) {
-    require._aliases[name] = alias;
+    aliases[name] = alias;
 }
 
-require._aliases = {};
-require._modules = {};
+return require;
 
+})();
 
