@@ -23,7 +23,7 @@
   "dependencies": {
     "detective": "0.1.0",
     "optimist": "0.3.4",
-    "required": "0.0.3",
+    "required": "0.0.5",
     "merge": "1.0.0",
     "http-browserify": "0.1.2",
     "events-browserify": "0.0.1"
