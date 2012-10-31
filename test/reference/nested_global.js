@@ -5,7 +5,7 @@ require('mod');
 
 });
 
-require.define('modules/mod', '../node_modules/', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('mod', '../node_modules/', function(global, module, exports, require, process, __filename, __dirname) {
 
 module.exports = function() {
     return 5;
