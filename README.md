@@ -128,7 +128,7 @@ The core node.js modules (events, http) are supported through this mechanism and
 Instead of adding boilerplate to your source files for "client side usage", just use the script command line tool to generate distributed versions of your library with all of the dependencies bundled.
 
 ```
-bundle --name "my_module" ./path/to/entry/point.js
+bundle --name "my_module" /path/to/entry/point.js
 ```
 
 Script will load the javascript file at the specified path and bundle all of the dependencies into a single file. The entry point module will be exposed to a variable with the given name (i.e. my_module).

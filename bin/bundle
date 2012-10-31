@@ -33,30 +33,40 @@ var filename = argv._.shift();
 var minify = argv.minify;
 
 // name to assign main module output
-var export_name = argv.name || path.basename(filename, '.js');
+var export_name = argv.name;
 
 var script_file = path.resolve(process.cwd, filename);
 
-var bundle = script.bundle({
-    src: script_file,
+var bundle = script.file(script_file, {
+    main: true
 });
 
-var bundle_src = bundle.toString();
-var req_src = fs.readFileSync(__dirname + '/../client/minimal.js', 'utf8');
+bundle.generate(function(err, source) {
+    if (err) {
+        throw err;
+    }
 
-var src = 'var ' + export_name + ' = (function() {';
-src += req_src;
-src += 'return ' + bundle_src + '})();';
+    var req_src = fs.readFileSync(__dirname + '/../client/minimal.js', 'utf8');
 
-if (minify) {
-    var uglifyjs = require('uglify-js');
-    var uglify = uglifyjs.uglify;
-    var ast = uglifyjs.parser.parse(src);
-    ast = uglify.ast_mangle(ast);
-    ast = uglify.ast_squeeze(ast);
-    src = uglify.gen_code(ast);
-}
+    var src = '';
+    if (export_name) {
+        src = 'var ' + export_name + ' = ';
+    }
 
-console.log(src);
+    src += '(function() {\n'
+    src += req_src;
+    src += '\nreturn ' + source + '})();';
+
+    if (minify) {
+        var uglifyjs = require('uglify-js');
+        var uglify = uglifyjs.uglify;
+        var ast = uglifyjs.parser.parse(src);
+        ast = uglify.ast_mangle(ast);
+        ast = uglify.ast_squeeze(ast);
+        src = uglify.gen_code(ast);
+    }
+
+    console.log(src);
+});
 
 // vim: ft=javascript
