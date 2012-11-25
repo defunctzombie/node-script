@@ -1,6 +1,6 @@
 (function(require) {
-require.alias('/events', '/../../../events-browserify/events');
-require.define('/../../../events-browserify/events', '/../../../events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
+require.alias('/events', '/../../node_modules/events-browserify/events');
+require.define('/../../node_modules/events-browserify/events', '/../../node_modules/events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
 if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
