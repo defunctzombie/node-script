@@ -65,6 +65,7 @@ app.use(connect_script({
   // if true, will compress with uglify-js (you will need to install it)
   compress: false;
 });
+```
 
 See the script-middleawre docs for more information.
 
