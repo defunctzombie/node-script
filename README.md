@@ -49,7 +49,7 @@ bundle.render(function(err, source) {
 Using the `script-middleware` package you can easily serve your script processed js files.
 
 ```javascript
-var script_middleware = require('script-middleware);
+var script_middleware = require('script-middleware');
 
 // this will serve all javascript files through script automatically resolving dependencies
 app.use(connect_script({
