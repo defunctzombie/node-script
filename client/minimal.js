@@ -6,9 +6,13 @@ var modules = {};
 
 function require(name) {
 
-    // use the offset for relative paths only
-    if (require.offset && name[0] === '.') {
-        name = require.offset + name;
+    if (name[0] === '.' && name[1] === '/') {
+        name = name.slice(2);
+    }
+
+    var self = this;
+    if (self._parent) {
+        name = self._parent.path + name;
     }
 
     // is the name aliased?
@@ -26,8 +30,14 @@ function require(name) {
         return details.module.exports;
     }
 
-    var previous = require.offset;
-    require.offset = details.offset;
+    // the require should be isolated
+    var req = function(name) {
+        return require.call(req, name);
+    };
+
+    req._parent = {
+        path: details.offset
+    };
 
     // provide empty stub for exports
     var module = details.module = {
@@ -35,13 +45,11 @@ function require(name) {
     };
 
     if (!require.main) {
-        require.main = module;
+        req.main = module;
     }
 
     var process = {};
-
-    details.fn.call(window, window, module, module.exports, require, process);
-    require.offset = previous;
+    details.fn.call(window, window, module, module.exports, req, process);
     return module.exports;
 }
 

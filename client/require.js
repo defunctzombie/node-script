@@ -19,7 +19,10 @@ function get(name) {
 function require(name) {
 
     // use the offset for relative paths only
-    if (require.offset && name[0] === '.') {
+    //if (require.offset && name[0] === '.') {
+    //    name = require.offset + name;
+    //}
+    if (require.offset) {
         name = require.offset + name;
     }
 

@@ -1,5 +1,6 @@
 (function(require) {
-require.define('events', '../../node_modules/events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
+require.alias('/events', '/../../../events-browserify/events');
+require.define('/../../../events-browserify/events', '/../../../events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
 if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -174,7 +175,7 @@ EventEmitter.prototype.listeners = function(type) {
 
 });
 
-require.define('script/main.events.js', '', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('/events', '/', function(global, module, exports, require, process, __filename, __dirname) {
 // check that events is properly shimmed
 require('events');
 
