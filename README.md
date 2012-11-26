@@ -32,8 +32,8 @@ var bundle = script.module('cool-npm-moduel');
 
 // rendering a bundle
 bundle.generate(function(err, source) {
-  // if no error, source will be a string with all of the dependencies rolled into it
-  console.log(source);
+    // if no error, source will be a string with all of the dependencies rolled into it
+    console.log(source);
 });
 ```
 
@@ -58,12 +58,12 @@ var core = script.file('/path/to/core.js');
 
 // we will setup a page_a bundle referencing the core bundle
 var page_a = script.file('/path/to/page_a.js', {
-  // specify that core is a dependency of page_a bundle
-  externals: [
-    core
-  ],
-  main: true,
-  client: true
+    // specify that core is a dependency of page_a bundle
+    externals: [
+        core
+    ],
+    main: true,
+    client: true
 });
 
 // and similar for page_b
@@ -84,9 +84,9 @@ Some modules contain compiled or server specific dependencies. These will not wo
 
 ```javascript
 var bundle = script.file('/path/to/page_a.js', {
-  shims: {
-    'ws': '/path/to/ws/shim.js'
-  }
+    shims: {
+        'ws': '/path/to/ws/shim.js'
+    }
 });
 ```
 
