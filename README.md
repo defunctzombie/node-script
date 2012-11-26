@@ -17,12 +17,6 @@ See the wiki for more details!
 
 I hate having a build step and I also hate having to write boilerplate code just so my client side dependencies load right. One minor slip-up or misplaced script tag and nothing works! So I made script do the hard work for me.
 
-## Installation
-
-```
-npm install script
-```
-
 ## Usage
 
 At the core, script will bundle up your javascript files or npm modules for rendering as a unified javascript file which can be used with the script client require.js file.
@@ -30,7 +24,6 @@ At the core, script will bundle up your javascript files or npm modules for rend
 To make a bundle from a script file or module
 
 ```javascript
-
 // create a bundle from a local file
 var bundle = script.file('/path/to/local/file.js');
 
@@ -38,7 +31,7 @@ var bundle = script.file('/path/to/local/file.js');
 var bundle = script.module('cool-npm-moduel');
 
 // rendering a bundle
-bundle.render(function(err, source) {
+bundle.generate(function(err, source) {
   // if no error, source will be a string with all of the dependencies rolled into it
   console.log(source);
 });
@@ -46,28 +39,9 @@ bundle.render(function(err, source) {
 
 ### connect/express middleware
 
-Using the `script-middleware` package you can easily serve your script processed js files.
+Using the [enchilada](https://github.com/shtylman/node-enchilada) package you can easily serve your script processed js files.
 
-```javascript
-var script_middleware = require('script-middleware');
-
-// this will serve all javascript files through script automatically resolving dependencies
-app.use(connect_script({
-  // where to look for source files
-  srcdir: __dirname + '/static/',
-
-  // where to cache generated bundles
-  cachedir: __dirname + '/static/cache/',
-
-  // age in milliseconds of the resource
-  max_age: 0,
-
-  // if true, will compress with uglify-js (you will need to install it)
-  compress: false;
-});
-```
-
-See the script-middleawre docs for more information.
+See the `enchilada` docs for more information.
 
 ### advanced
 
@@ -88,10 +62,6 @@ var page_a = script.file('/path/to/page_a.js', {
   externals: [
     core
   ],
-  // see the API description below for the following fields
-  externals_url: function(cb) {
-    cb(err, url);
-  }
   main: true,
   client: true
 });
@@ -124,6 +94,8 @@ Now whenever sript encounters `require('ws')` it will make sure to avoid loading
 
 The core node.js modules (events, http) are supported through this mechanism and will be shimmed for you automatically. Any shims you specify will override the defauls.
 
+You can specify shims for your modules with a `shims` field in your package.json. Script will detect those shims and use them.
+
 ## cli ##
 
 Instead of adding boilerplate to your source files for "client side usage", just use the script command line tool to generate distributed versions of your library with all of the dependencies bundled.
@@ -135,3 +107,12 @@ bundle --name "my_module" /path/to/entry/point.js
 Script will load the javascript file at the specified path and bundle all of the dependencies into a single file. The entry point module will be exposed to a variable with the given name (i.e. my_module).
 
 If you want to minify the output, just pass the ```--minify``` option and the output will be run through uglify-js.
+
+## Installation
+
+Install with [npm](https://npmjs.org)
+
+```
+npm install script
+```
+
