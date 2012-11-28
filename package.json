@@ -30,11 +30,5 @@
   "devDependencies": {
     "mocha": ">1.0.0",
     "connect": ">2.x.x"
-  },
-  "optionalDependencies": {
-    "uglify-js": "1.2.6"
-  },
-  "engines": {
-    "node": "*"
   }
 }
