@@ -1,29 +1,18 @@
 
-// closure so the 'require' variable can be minified
 var require = (function () {
 
 var aliases = {};
 var modules = {};
 
-function get(name) {
-    var module = modules[name];
-    if (module) {
-        return module;
-    }
-
-    return modules[name] = {
-        waiting: []
-    };
-}
-
 function require(name) {
 
-    // use the offset for relative paths only
-    //if (require.offset && name[0] === '.') {
-    //    name = require.offset + name;
-    //}
-    if (require.offset) {
-        name = require.offset + name;
+    if (name[0] === '.' && name[1] === '/') {
+        name = name.slice(2);
+    }
+
+    var self = this;
+    if (self._parent) {
+        name = self._parent.path + name;
     }
 
     // is the name aliased?
@@ -41,13 +30,14 @@ function require(name) {
         return details.module.exports;
     }
 
-    var previous = require.offset;
-    require.offset = details.offset;
+    // the require should be isolated
+    var req = function(name) {
+        return require.call(req, name);
+    };
 
-    // mod A sets the export object to a function, then requires mod B
-    // mod B requires mod A. Because mod A was able to set the exports
-    // the require in mod B should return the function and not the stub
-    // object that exports starts out as
+    req._parent = {
+        path: details.offset
+    };
 
     // provide empty stub for exports
     var module = details.module = {
@@ -55,65 +45,23 @@ function require(name) {
     };
 
     if (!require.main) {
-        require.main = module;
+        req.main = module;
     }
 
-    // TODO
     var process = {};
-
-    details.fn.call(window, window, module, module.exports, require, process);
-    require.offset = previous;
+    details.fn.call(window, window, module, module.exports, req, process);
     return module.exports;
 }
 
-require.load = function(url) {
-    (function() {
-        var script = document.createElement('script');
-        script.src = url;
-        script.type = 'text/javascript';
-        script.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(script, s);
-    })();
-}
-
 require.define = function(name, offset, fn) {
-    var module = get(name);
-
-    // register module function
-    module.offset = offset;
-    module.fn = fn;
-
-    // don't use forEach to be IE compatible
-    for (var i=0 ; i<module.waiting.length ; ++i) {
-        module.waiting[i]();
-    }
+    modules[name] = {
+        offset: offset,
+        fn: fn
+    };
 };
 
 require.alias = function(name, alias) {
     aliases[name] = alias;
-}
-
-require.wait = function(names, cb) {
-    var count = names.length;
-    function done() {
-        if (--count <= 0) {
-            cb();
-        }
-    }
-
-    names.forEach(function(name) {
-        var module = get(name);
-
-        // already loaded
-        if (module.exports) {
-            return done();
-        }
-
-        module.waiting.push(function() {
-            done();
-        });
-    });
 }
 
 return require;
