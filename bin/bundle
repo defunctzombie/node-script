@@ -46,11 +46,11 @@ bundle.generate(function(err, source) {
         throw err;
     }
 
-    var req_src = fs.readFileSync(__dirname + '/../client/minimal.js', 'utf8');
+    var req_src = fs.readFileSync(__dirname + '/../client/require.js', 'utf8');
 
     var src = '';
     if (export_name) {
-        src = 'var ' + export_name + ' = ';
+        src = export_name + ' = ';
     }
 
     src += '(function() {\n'
