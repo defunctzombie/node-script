@@ -64,7 +64,7 @@ If you specify an object, then you can replace modules or other files. This usag
 }
 ```
 
-Now when you package your code, ```module-a``` will be replaced with code from ```./shims/module-a.js" and anytime ```./server/only.js``` is used, it will be replaced with ```./shims/server-only.js```
+Now when you package your code, ```module-a``` will be replaced with code from ```./shims/module-a.js``` and anytime ```./server/only.js``` is used, it will be replaced with ```./shims/server-only.js```
 
 If a module you depend on already includes a ```browser``` field, then you don't have to do anything special. Whenever you require that module, it will automatically work. The ```ws``` and ```xmlhttprequest``` modules are examples of this behavior.
 
