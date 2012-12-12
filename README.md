@@ -43,7 +43,32 @@ Using the [enchilada](https://github.com/shtylman/node-enchilada) package you ca
 
 See the `enchilada` docs for more information.
 
-### advanced
+### package.json
+
+Some modules contain server specific code or dependencies. In order to allow such a module to be packaged, script supports the ```browser``` field in package.json.
+
+The ```browser``` field allows modules to specify what files should be replaced with browser versions when packaging a module for browser use.
+
+When you specify a single string for the ```browser``` field, then that will replace ```main``` and be the module entry point.
+
+```javascript
+"browser": "./browser/specific/main.js"
+```
+
+If you specify an object, then you can replace modules or other files. This usage allows you to re-use much more of your javascript code.
+
+```javascript
+"browser": {
+    "module-a": "./shims/module-a.js",
+    "./server/only.js": "./shims/server-only.js"
+}
+```
+
+Now when you package your code, ```module-a``` will be replaced with code from ```./shims/module-a.js" and anytime ```./server/only.js``` is used, it will be replaced with ```./shims/server-only.js```
+
+If a module you depend on already includes a ```browser``` field, then you don't have to do anything special. Whenever you require that module, it will automatically work. The ```ws``` and ```xmlhttprequest``` modules are examples of this behavior.
+
+### advanced - external modules
 
 While most users will be happy with the basic connect/express usage above, script is designed to fill complex app needs as well.
 
@@ -78,23 +103,6 @@ The only script your html page needs to have is the entry script (page_a or page
 <script src="/route/to/page_a.js"></script>
 ```
 
-### shims
-
-Some modules contain compiled or server specific dependencies. These will not work on the client and must be replaced. Script allows you to easily shim out any dependency or require.
-
-```javascript
-var bundle = script.file('/path/to/page_a.js', {
-    shims: {
-        'ws': '/path/to/ws/shim.js'
-    }
-});
-```
-
-Now whenever sript encounters `require('ws')` it will make sure to avoid loading the server only module and instead load the file you specified.
-
-The core node.js modules (events, http) are supported through this mechanism and will be shimmed for you automatically. Any shims you specify will override the defauls.
-
-You can specify shims for your modules with a `shims` field in your package.json. Script will detect those shims and use them.
 
 ## cli ##
 
