@@ -1,5 +1,5 @@
 
-var require = (function () {
+var require = (function (window) {
 
 var aliases = {};
 var modules = {};
@@ -66,5 +66,5 @@ require.alias = function(name, alias) {
 
 return require;
 
-})();
+})(window);
 
