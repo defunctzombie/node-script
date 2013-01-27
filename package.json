@@ -24,7 +24,8 @@
     "optimist": "0.3.4",
     "required": "0.0.8",
     "merge": "1.0.0",
-    "http-browserify": "0.1.2"
+    "http-browserify": "0.1.2",
+    "process": "0.5.0"
   },
   "devDependencies": {
     "mocha": ">1.0.0",

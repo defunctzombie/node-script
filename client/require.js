@@ -48,8 +48,7 @@ function require(name) {
         req.main = module;
     }
 
-    var process = {};
-    details.fn.call(window, window, module, module.exports, req, process);
+    details.fn.call(window, window, module, module.exports, req);
     return module.exports;
 }
 
