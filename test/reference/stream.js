@@ -1,7 +1,9 @@
 (function(require) {
-require.alias('/../../shims/events', '/../../node_modules/events-browserify/events');
-require.alias('/stream', '/../../shims/stream');
-require.define('/../../node_modules/events-browserify/events', '/../../node_modules/events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
+require.alias('/../../shims/process', '/../../../node-process/browser.js');
+require.alias('/stream', '/../../shims/stream.js');
+require.define('/../../shims/events.js', '/../../shims/', function(global, module, exports, require, __filename, __dirname) {
+var process = require('process');
+
 if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -176,35 +178,12 @@ EventEmitter.prototype.listeners = function(type) {
 
 });
 
-require.define('/../../shims/util/inherits', '/../../shims/util/', function(global, module, exports, require, process, __filename, __dirname) {
-/**
- * Inherit the prototype methods from one constructor into another.
- *
- * The Function.prototype.inherits from lang.js rewritten as a standalone
- * function (not on Function.prototype). NOTE: If this file is to be loaded
- * during bootstrapping this function needs to be rewritten using some native
- * functions as prototype setup using normal JavaScript does not work as
- * expected during bootstrapping (see mirror.js in r114903).
- *
- * @param {function} ctor Constructor function which needs to inherit the
- *     prototype.
- * @param {function} superCtor Constructor function to inherit prototype from.
- */
-module.exports = function(ctor, superCtor) {
-  ctor.super_ = superCtor;
-  ctor.prototype = Object.create(superCtor.prototype, {
-    constructor: {
-      value: ctor,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-};
+require.define('/stream.js', '/', function(global, module, exports, require, __filename, __dirname) {
+require('stream');
 
 });
 
-require.define('/../../shims/stream', '/../../shims/', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('/../../shims/stream.js', '/../../shims/', function(global, module, exports, require, __filename, __dirname) {
 var events = require('events');
 
 // use inherits directly to avoid bringing in all of util
@@ -306,8 +285,87 @@ Stream.prototype.pipe = function(dest, options) {
 
 });
 
-require.define('/stream', '/', function(global, module, exports, require, process, __filename, __dirname) {
-require('stream');
+require.define('/../../../node-process/browser.js', '/../../../node-process/', function(global, module, exports, require, __filename, __dirname) {
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+
+});
+
+require.define('/../../shims/util/inherits.js', '/../../shims/util/', function(global, module, exports, require, __filename, __dirname) {
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+module.exports = function(ctor, superCtor) {
+  ctor.super_ = superCtor;
+  ctor.prototype = Object.create(superCtor.prototype, {
+    constructor: {
+      value: ctor,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+};
 
 });
 

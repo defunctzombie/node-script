@@ -20,6 +20,12 @@ function require(name) {
 
     var details = modules[name];
 
+    // try to lookup by .js name
+    // we don't alias .js extensions
+    if (!details) {
+        details = modules[name + '.js'];
+    }
+
     // uh oh
     if (!details || !details.fn) {
         throw new Error('no such module: ' + name);

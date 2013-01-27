@@ -1,5 +1,5 @@
 (function(require) {
-require.define('/noop', '/', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('/noop.js', '/', function(global, module, exports, require, __filename, __dirname) {
 /// no content
 
 });

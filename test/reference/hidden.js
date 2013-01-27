@@ -1,10 +1,10 @@
 (function(require) {
-require.define('/noop', '/', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('/noop.js', '/', function(global, module, exports, require, __filename, __dirname) {
 /// no content
 
 });
 
-require.define('/hidden', '/', function(global, module, exports, require, process, __filename, __dirname) {
+require.define('/hidden.js', '/', function(global, module, exports, require, __filename, __dirname) {
 /// even requires in if statements and functions should be found
 
 // TODO add an 'expects' method to assert

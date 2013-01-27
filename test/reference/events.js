@@ -1,6 +1,15 @@
 (function(require) {
-require.alias('/events', '/../../node_modules/events-browserify/events');
-require.define('/../../node_modules/events-browserify/events', '/../../node_modules/events-browserify/', function(global, module, exports, require, process, __filename, __dirname) {
+require.alias('/events', '/../../shims/events.js');
+require.alias('/../../shims/process', '/../../../node-process/browser.js');
+require.define('/events.js', '/', function(global, module, exports, require, __filename, __dirname) {
+// check that events is properly shimmed
+require('events');
+
+});
+
+require.define('/../../shims/events.js', '/../../shims/', function(global, module, exports, require, __filename, __dirname) {
+var process = require('process');
+
 if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -175,9 +184,59 @@ EventEmitter.prototype.listeners = function(type) {
 
 });
 
-require.define('/events', '/', function(global, module, exports, require, process, __filename, __dirname) {
-// check that events is properly shimmed
-require('events');
+require.define('/../../../node-process/browser.js', '/../../../node-process/', function(global, module, exports, require, __filename, __dirname) {
+// shim for using process in browser
+
+var process = module.exports = {};
+
+process.nextTick = (function () {
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
+
+    if (canSetImmediate) {
+        return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canPost) {
+        var queue = [];
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'process-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+
+        return function nextTick(fn) {
+            queue.push(fn);
+            window.postMessage('process-tick', '*');
+        };
+    }
+
+    return function nextTick(fn) {
+        setTimeout(fn, 0);
+    };
+})();
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+}
+
+// TODO(shtylman)
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
 
 });
 
