@@ -54,7 +54,7 @@ function require(name) {
         req.main = module;
     }
 
-    details.fn.call(window, window, module, module.exports, req);
+    details.fn.call(window, window, module, module.exports, req, name, details.offset);
     return module.exports;
 }
 
