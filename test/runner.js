@@ -17,6 +17,7 @@ function add_test(filename) {
 
             var count = 0;
             var context = {
+                console: console,
                 window: {},
                 assert: assert,
                 done : function () {

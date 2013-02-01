@@ -51,15 +51,16 @@ function require(name) {
     };
 
     if (!require.main) {
-        req.main = module;
+        req.main = require.main = module;
     }
 
-    details.fn.call(window, window, module, module.exports, req, name, details.offset);
+    details.fn.call(window, window, module, module.exports, req, details.file, details.offset);
     return module.exports;
 }
 
 require.define = function(name, offset, fn) {
-    modules[name] = {
+    modules[offset + name] = {
+        file: name,
         offset: offset,
         fn: fn
     };
