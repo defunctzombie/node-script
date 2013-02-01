@@ -1,2 +1,5 @@
 // global.js requires something from the global path
-require('./modules/global');
+var glob = require('./modules/global');
+
+assert.equal(glob, 'foobar');
+done();

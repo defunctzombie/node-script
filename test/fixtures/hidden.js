@@ -2,13 +2,14 @@
 
 // TODO add an 'expects' method to assert
 
+var foo;
 function func() {
-    require('./noop');
+    foo = require('./noop');
 }
 
 if (true) {
     func();
 }
 
-assert.equal(noop_load_count, 1);
-
+assert.equal(foo, 'noop');
+done();

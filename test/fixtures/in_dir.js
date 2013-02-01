@@ -1,2 +1,5 @@
 /// make sure loading from inside a directory works
-require('./modules/sample');
+var sample = require('./modules/sample');
+
+assert.equal(sample, 22);
+done();

@@ -2,6 +2,7 @@
 // builtin
 var assert = require('assert');
 var fs = require('fs');
+var vm = require('vm');
 
 // local
 var script = require('../');
@@ -11,16 +12,20 @@ function add_test(filename) {
         var full_path = __dirname + '/fixtures/' + filename;
         var expect_path = __dirname + '/reference/' + filename;
 
-        script.file(full_path).generate(function(err, source) {
+        script.file(full_path, { client: true, main: true }).generate(function(err, src) {
             assert.ok(!err, err);
 
-            if (process.env.GENERATE) {
-                fs.writeFileSync(expect_path, source, 'utf8');
-                return done();
-            }
+            var count = 0;
+            var context = {
+                window: {},
+                assert: assert,
+                done : function () {
+                    count++;
+                }
+            };
 
-            var expected = fs.readFileSync(expect_path, 'utf8');
-            assert.equal(source, expected);
+            vm.runInNewContext(src, context);
+            assert(count > 0);
             done();
         });
     });
@@ -28,7 +33,7 @@ function add_test(filename) {
 
 fs.readdirSync(__dirname + '/fixtures').forEach(function(fixture) {
     // skip directories and vim swap files
-    if (fixture.indexOf('.js') < 0 || fixture.indexOf('.swp') >= 0) {
+    if (!/.js$/.test(fixture) || fixture.indexOf('.swp') >= 0) {
         return;
     }
 

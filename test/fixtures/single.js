@@ -1,2 +1,4 @@
 /// single require
-require('./noop');
+assert.equal(require('./noop'), 'noop');
+module.exports = 'single';
+done();

@@ -1,2 +1,5 @@
 // mod is found in a node_modules directory
-require('mod');
+var mod = require('mod');
+assert.equal(mod, 5);
+
+module.exports = 'foobar';

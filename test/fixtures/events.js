@@ -1,2 +1,7 @@
 // check that events is properly shimmed
-require('events');
+var EventEmitter = require('events').EventEmitter;
+
+var ev = new EventEmitter();
+
+ev.on('done', done);
+ev.emit('done');
